@@ -2,30 +2,34 @@ const express = require('express');
 const cors = require('cors');
 const sequelize = require('./utils/db');
 const authRoutes = require('./routes/auth.routes');
-const User = require('./models/user.model');
 require('dotenv').config();
 
 const app = express();
+
+// Middlewares
 app.use(cors());
 app.use(express.json());
 
-// health check
-app.get('/', (req, res) => res.json({ ok: true, service: 'auth-service' }));
+// Health check
+app.get('/', (req, res) => {
+  res.json({ ok: true, service: 'auth-service' });
+});
 
-// mount routes at root: /auth/register and /auth/login
+// Routing
 app.use('/auth', authRoutes);
 
-// sync DB (dev)
+// DB Sync
 async function initDb() {
   try {
     await sequelize.authenticate();
     await sequelize.sync();
     console.log('DB connected & synced');
   } catch (err) {
-    console.error('DB connection error', err);
+    console.error('DB connection error:', err);
     process.exit(1);
   }
 }
+
 initDb();
 
 module.exports = app;
