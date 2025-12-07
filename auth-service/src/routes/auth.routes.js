@@ -1,20 +1,12 @@
 const express = require('express');
-const cors = require('cors');
-const authRoutes = require('./routes/auth.routes');
-require('dotenv').config();
-require('./utils/db'); // connect database
+const { register, login } = require('../controllers/auth.controller');
 
-const app = express();
+const router = express.Router();
 
-app.use(cors());
-app.use(express.json());
+// REGISTER
+router.post('/register', register);
 
-// Prefix API agar rapi
-app.use('/api/auth', authRoutes);
+// LOGIN
+router.post('/login', login);
 
-app.get('/', (req, res) => {
-  res.json({ message: 'Auth Service Running' });
-});
-
-const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => console.log(`Auth Service running on port ${PORT}`));
+module.exports = router;

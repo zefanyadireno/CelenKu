@@ -7,6 +7,7 @@ import { SettingPage } from './components/SettingPage';
 import { SavingPage } from './components/SavingPage';
 import { BottomNav } from './components/BottomNav';
 import { Notification } from './components/NotificationCenter';
+import { getToken } from './api/authApi';
 
 export interface Transaction {
   id: string;
@@ -21,7 +22,7 @@ export interface Transaction {
 }
 
 export default function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(!!getToken());
   const [currentPage, setCurrentPage] = useState('home');
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -79,7 +80,6 @@ export default function App() {
     };
     setTransactions(prev => [newTransaction, ...prev]);
 
-    // Also add notification
     const notificationTitle = 
       transaction.type === 'send' ? 'Transfer Berhasil' :
       transaction.type === 'receive' ? 'Uang Diterima' :

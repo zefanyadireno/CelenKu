@@ -1,22 +1,24 @@
-// src/api/authApi.ts
-
-const BASE_URL = "http://localhost:4000"; // nanti kita sesuaikan dengan Docker + Gateway
+export const API_URL = "http://localhost:8888/auth";
 
 export async function loginApi(email: string, password: string) {
-  const res = await fetch(`${BASE_URL}/auth/login`, {
+  const res = await fetch(`${API_URL}/login`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password }),
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ email, password })
   });
 
   return res.json();
 }
 
 export async function registerApi(name: string, email: string, password: string) {
-  const res = await fetch(`${BASE_URL}/auth/register`, {
+  const res = await fetch(`${API_URL}/register`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name, email, password }),
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ name, email, password })
   });
 
   return res.json();
