@@ -13,6 +13,7 @@ const sequelize = new Sequelize(
   }
 );
 
+// Test connection
 sequelize.authenticate()
   .then(() => console.log('Postgres connected 👍'))
   .catch(err => console.error('DB Connection Error ❌', err));
