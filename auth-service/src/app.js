@@ -1,20 +1,23 @@
 const express = require('express');
 const cors = require('cors');
+const sequelize = require('./utils/db');   // <--- ini harus ada
 const authRoutes = require('./routes/auth.routes');
 require('dotenv').config();
-require('./utils/db'); // initialize DB
 
 const app = express();
+
 app.use(cors());
 app.use(express.json());
 
-// health check
-app.get('/', (req, res) => res.json({ ok: true, service: 'auth-service' }));
+// Health check
+app.get('/', (req, res) => {
+  res.json({ ok: true, service: 'auth-service' });
+});
 
-// mount routes at root: /auth/register and /auth/login
+// Prefix: /auth
 app.use('/auth', authRoutes);
 
-// sync DB (dev)
+// Connect & sync DB
 async function initDb() {
   try {
     await sequelize.authenticate();
