@@ -1,19 +1,26 @@
 const express = require('express');
 const cors = require('cors');
-const userRoutes = require('./routes/user.routes');
+const routes = require('./routes/user.routes');
+const sequelize = require('./utils/db');
 require('dotenv').config();
-require('./utils/db'); 
 
 const app = express();
-
 app.use(cors());
 app.use(express.json());
 
-app.use('/api/users', userRoutes);
+app.use('/user', routes);
 
-app.get('/', (req, res) => {
-  res.json({ message: "User Service Running" });
-});
+async function start() {
+  try {
+    await sequelize.sync();
+    console.log("User-service DB synced");
+    
+    app.listen(process.env.PORT, () =>
+      console.log(`User-service running on port ${process.env.PORT}`)
+    );
+  } catch (err) {
+    console.error("Init error:", err);
+  }
+}
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`User Service running on port ${PORT}`));
+start();
